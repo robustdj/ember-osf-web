@@ -9,7 +9,7 @@ import { MirageCollection } from 'ember-osf-web/mirage/factories/collection';
 import { Permission } from 'ember-osf-web/models/osf-model';
 import { click, visit } from 'ember-osf-web/tests/helpers';
 import { setupEngineApplicationTest } from 'ember-osf-web/tests/helpers/engines';
-import stripHtmlTags from 'ember-osf-web/tests/helpers/strip-html-tags';
+import stripHtmlTags from 'ember-osf-web/utils/strip-html-tags';
 
 const registrationStates: Record<string, {
     trait: string, icon: string,
@@ -60,6 +60,7 @@ module('Registries | Acceptance | overview.topbar', hooks => {
     test('topbar is not visible for archiving or withdrawn registrations', async assert => {
         const reg = server.create('registration', {
             registrationSchema: server.schema.registrationSchemas.find('prereg_challenge'),
+            provider: server.create('registration-provider', { id: 'osf' }),
         });
         await visit(`/${reg.id}/`);
 
@@ -88,6 +89,7 @@ module('Registries | Acceptance | overview.topbar', hooks => {
     test('bookmarks work', async assert => {
         const reg = server.create('registration', {
             registrationSchema: server.schema.registrationSchemas.find('prereg_challenge'),
+            provider: server.create('registration-provider', { id: 'osf' }),
         });
 
         const bookmarksColl = server.create(
